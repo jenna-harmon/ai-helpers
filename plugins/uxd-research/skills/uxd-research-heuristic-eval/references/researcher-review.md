@@ -35,9 +35,11 @@ which reviewed reports replace the unreviewed drafts.
 
 ## Choose review format
 
-When `--review none` is NOT set, present the review format question.
-Before presenting findings, ask the researcher how they want to
-review:
+In Mode A (no `--review` flag), present the review format question
+**through the interactive question mechanism** (`AskUserQuestion`) — the
+same tool used for the framework choice — not as free-text prose, which a
+non-interactive caller cannot answer. This is a hard stop: wait for the
+answer before presenting findings.
 
 > **How would you like to review the findings?**
 >
@@ -46,6 +48,9 @@ review:
 >    and edit there, then paste your updates back here to continue.
 > 2. **Here in the chat** — I'll present the findings inline and we'll
 >    walk through them together.
+
+When `--review chat` is set, the researcher has already chosen chat —
+skip this question and present the findings inline.
 
 ## Spreadsheet review
 

@@ -139,10 +139,22 @@ Confirm what you're evaluating. The user may provide:
   user: "I can't access Figma directly, but exported screenshots work
   well. Export each key screen or flow step as an image."
 
-If the input is ambiguous or incomplete, ask:
+If the input is ambiguous or incomplete, do **not** evaluate on a guess
+— resolve it first. There is no safe default for "which screens am I
+even evaluating?":
+
 - Which screens or flows should be evaluated?
 - Is this a complete flow or isolated screens?
 - What is the user trying to accomplish in this interface?
+
+**Mode A:** ask the researcher and **wait** for an answer before any
+evaluation passes — a human is present to clarify.
+
+**Mode B:** no human can answer mid-run, so **stop with a clear error**
+naming what is missing (e.g., "Interface input is ambiguous — specify
+which screens/flows to evaluate and the user's task context"), exactly
+as a missing `--framework` halts Mode B. Never proceed on incomplete
+input, and never hang waiting for a reply that cannot come.
 
 ### Review subject record
 
@@ -371,16 +383,43 @@ Number consolidated violations sequentially: V-01, V-02, V-03...
 
 ## Step 4: Researcher Review
 
-### Mode A and `--review chat`: interactive review (default)
+### Mode A: choose review format, then review (default)
 
-Present consolidated findings to the researcher before generating
-output. This is a required human gate. Follow the review format
-described in [references/researcher-review.md](references/researcher-review.md),
-which supports both spreadsheet (Google Sheets) and chat-based review.
+This is a required human gate: present consolidated findings to the
+researcher and get their confirm/dismiss/severity decisions **before**
+writing any report files.
 
-After review: remove dismissed violations, use researcher's severity
-ratings, append researcher context, and add any new violations the
-researcher identified.
+**First, ask how they want to review.** Route this **through the
+environment's interactive question mechanism** (the same `AskUserQuestion`
+tool used for the framework choice) — do **not** ask as free-text prose,
+which a non-interactive caller cannot answer:
+
+> **How would you like to review the findings?**
+>
+> 1. **Spreadsheet** — I'll create a Google Sheet with all violations,
+>    suggested severities, and columns for your decisions.
+> 2. **Here in the chat** — I'll present the findings inline and we'll
+>    walk through them together.
+
+This is a **hard stop** (like the framework question): wait for the
+answer before presenting findings. If the interactive mechanism is
+unavailable, ask the same question in chat and stop until the researcher
+replies — do not pick a format and proceed on your own. This question
+only arises in Mode A, where a human is present; Mode B always carries
+`--review`, which bypasses it.
+
+Then follow the chosen format as described in
+[references/researcher-review.md](references/researcher-review.md).
+
+### `--review chat`: present in chat and wait
+
+The researcher has already chosen chat — skip the format question.
+Present consolidated findings inline and wait for their
+confirm/dismiss/severity before writing reports.
+
+After review (either path): remove dismissed violations, use researcher's
+severity ratings, append researcher context, and add any new violations
+the researcher identified.
 
 ### `--review none`: skip review (Mode B)
 
