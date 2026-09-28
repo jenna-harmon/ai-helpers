@@ -246,9 +246,11 @@ heuristics within each violation. Report "no violations" per framework.
 
 ### Specialist evaluators (Mode A only)
 
-After the framework is confirmed, offer specialist lenses. Use the
-environment's interactive question mechanism when available. If that
-mechanism is unavailable, ask in chat.
+After the framework is confirmed, offer specialist lenses **through the
+environment's interactive question mechanism** (the same `AskUserQuestion`
+tool used for the framework choice). Do **not** pose this as free-text
+prose: a prose question cannot be answered by non-interactive/agent
+callers, so the skill stalls waiting for a reply that never arrives.
 
 > **Would you like to add specialist evaluator lenses beyond the three
 > generalist passes?**
@@ -258,8 +260,11 @@ mechanism is unavailable, ask in chat.
 > 3. **Interaction design** (micro-interactions, state transitions)
 > 4. **Content/UX writing** (labels, instructions, error messages)
 
-Multi-select allowed. If declined or no answer, proceed with
-generalist evaluators only — specialists are additive, not required.
+Multi-select allowed. **This is not a hard stop** (unlike the framework
+question): if the interactive mechanism is unavailable, or the question
+is declined or unanswered, default to **"None"** and continue with the
+generalist evaluators — specialists are additive, not required. Do not
+end your turn waiting for a reply.
 
 **Do not offer accessibility as a specialist lens.** If the researcher
 asks for accessibility, WCAG, or axe, decline: this skill inspects
