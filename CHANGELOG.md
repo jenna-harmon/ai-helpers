@@ -23,6 +23,24 @@
   Mode B stops with a clear error (like a missing `--framework`) rather than
   hanging on a question no agent caller can answer. The skill never proceeds on
   incomplete input.
+- `uxd-research-heuristic-eval`: browser-inspection screenshots are now saved to
+  the resolved project directory (the `--project` dir, or the current working
+  directory — the same location as the report) using an absolute path. Previously
+  the step gave a bare relative filename, which the Playwright MCP resolved against
+  its own working root (`~/`), writing the screenshots outside the project and
+  orphaning them from the report that references them.
+- `uxd-research-heuristic-eval`: the Step 4 researcher **spreadsheet review** path
+  now falls back to a local CSV (written to the project directory, same columns,
+  legends as comment rows) when the Google Workspace MCP is unavailable, instead of
+  dead-ending. The MCP was never a declared precondition and the path had no
+  fallback, so a Mode A operator choosing "spreadsheet" without it could not
+  proceed.
+- `uxd-research-heuristic-eval`: the report traceability line now populates
+  `[version]` from the plugin's git ref (short commit SHA, or a tag) instead of a
+  `plugin.json` `version` field. The `uxd-research` manifest intentionally has no
+  `version` field (repo convention — Claude Code falls back to the commit SHA), so
+  the previous instruction could not be satisfied deterministically; emits
+  `unversioned` if no git ref resolves.
 
 ## 1.1.0
 

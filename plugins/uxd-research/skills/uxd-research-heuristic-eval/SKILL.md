@@ -195,7 +195,13 @@ state — not the document behind the page.
    Playwright accessibility snapshot as an a11y audit.
 4. **Inspect interactive elements** — click/hover expandable sections,
    popovers, drawers, menus, toggles, modals. Capture each state.
-5. **Save screenshots** as `heuristic-eval-[date]-screenshot-[N]-[description].png`
+5. **Save screenshots** to the resolved project directory — the `--project` dir,
+   or the current working directory if none was given (the same location as the
+   report). Pass an **absolute** path to the browser tool
+   (e.g. `[project-dir]/heuristic-eval-[date]-screenshot-[N]-[description].png`)
+   so it does not resolve a bare filename against its own working root and orphan
+   the files. Do not write to the home directory and do not prompt — screenshots
+   stay co-located with the report that references them.
 6. **Build an inspection summary** listing screenshots, page-structure
    observations, and interactive states.
 
@@ -479,8 +485,12 @@ understand what each evaluator was focused on:
 Place this legend alongside the severity legend so researchers have a
 complete key for interpreting the findings.
 
-All outputs include a traceability line at the bottom. Read the version
-from the plugin's `plugin.json` manifest and populate `[version]`.
+All outputs include a traceability line at the bottom. The `uxd-research`
+manifest intentionally carries no `version` field (repo convention — Claude Code
+falls back to the git commit SHA), so populate `[version]` from the plugin's
+current **git ref**: the short commit SHA (`git rev-parse --short HEAD`), or a tag
+if the plugin is checked out at one. If no git ref is resolvable, emit
+`unversioned` rather than a placeholder.
 
 ## Guardrails
 

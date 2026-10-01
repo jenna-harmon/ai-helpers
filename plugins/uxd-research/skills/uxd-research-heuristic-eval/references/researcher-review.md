@@ -55,7 +55,18 @@ skip this question and present the findings inline.
 ## Spreadsheet review
 
 If the researcher chooses spreadsheet, create a Google Sheet using
-the Google Workspace MCP with the following structure:
+the Google Workspace MCP with the following structure.
+
+**If the Google Workspace MCP is not available, do not dead-end — fall back to a
+local CSV.** Write `heuristic-eval-review-[date].csv` to the resolved project
+directory (the `--project` dir, or the current working directory — the same
+location as the report), using the same columns (A–K) below with the Suggested
+Severity column pre-filled. CSV cannot carry data validation or the visible legend
+blocks, so prepend the severity legend and evaluator legend as comment rows (each
+line prefixed with `#`) above the header row. Share the file path, tell the
+researcher to fill in columns G (Your Severity), H (Confirm/Dismiss), and I
+(Context), save, and tell you which rows they changed — then wait for their review
+before proceeding (same hard stop as the Sheet path).
 
 **Sheet name:** `Heuristic Eval Review — [date] — [Review subject short title]`
 
